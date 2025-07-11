@@ -17,6 +17,24 @@ st.set_page_config(page_title="Classement Machines", layout="centered")
 st.title("📊 Classement des données machines")
 st.write("Uploadez les fichiers ci-dessous pour générer le rapport.")
 
+st.sidebar.title("📘 Mode d'emploi")
+st.sidebar.markdown("""
+1. Cliquer sur "Browse files" pour télécharger le fichier à traiter
+
+⚠️ Il faut que le fichier s'appelle "Business Unit Groupe 2.xlsx"
+
+2. Cliquer sur "🧪 Lancer le traitement" pour traiter le fichier
+
+3. Cliquez sur "📥 Télécharger le fichier classé" pour l'enregistrer sur votre appareil.
+
+⚠️ Cet outil n'enregistre pas les fichiers (il faut bien importer à chaque fois)
+
+""")
+
+col1, col2 = st.columns([4, 1])
+with col2:
+    st.image("logo.png", width=80)
+
 # Téléversement du fichier principal
 uploaded_file = st.file_uploader("📁 Fichier 'Business Unit Groupe 2.xlsx'", type=["xlsx"])
 
@@ -35,4 +53,4 @@ if uploaded_file:
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 else:
-    st.info("Veuillez téléverser les deux fichiers pour commencer.")
+    st.info("Veuillez téléverser le fichier pour commencer.")
