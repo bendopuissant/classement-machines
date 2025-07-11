@@ -10,7 +10,7 @@ Original file is located at
 import streamlit as st
 import pandas as pd
 from io import BytesIO
-from traitement_f13 import traiter_fichier_excel  # Ton code existant ici
+from traitement import traiter_fichier_excel  # Ton code existant ici
 
 st.set_page_config(page_title="Classement Machines", layout="centered")
 
@@ -25,7 +25,7 @@ if uploaded_file:
     if st.button("🧪 Lancer le traitement"):
         with st.spinner("Traitement en cours..."):
 
-            fichier_sortie = traiter_fichier_excel("Business Unit Groupe 2.xlsx", "GR2.xlsx")
+            fichier_sortie = traiter_fichier_excel(uploaded_file)
 
             st.success("✅ Traitement terminé !")
             st.download_button(
