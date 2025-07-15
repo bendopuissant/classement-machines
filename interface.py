@@ -18,7 +18,7 @@ st.set_page_config(page_title="Classement Machines", layout="centered")
 col1, col2 = st.columns([3, 1])
 
 with col2:
-    st.image("logo.png", width=500)
+    st.image("logo.png", width=700)
 
 with col1:
   st.title("📊 Classement des données machines")
@@ -37,8 +37,6 @@ st.sidebar.markdown("""
 ⚠️ Cet outil n'enregistre pas les fichiers (il faut bien importer à chaque fois)
 
 """)
-
-st.sidebar.image("logo.png", width=500)
 
 # Téléversement du fichier principal
 uploaded_file = st.file_uploader("📁 Fichier 'Business Unit Groupe 2.xlsx'", type=["xlsx"])
