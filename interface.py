@@ -49,9 +49,15 @@ with st.sidebar :
 
   with st.expander("A propos") :
     st.markdown("""
+
     J'ai mis au point cet outil dans le cadre d'un stage technicien à Michelin Blanzy du 10/06/2025 au 18/07/2025.
+
     Il a pour but de faciliter le traitement de données en permettant de créer un fichier complet classant les données à partir d'un fichier excel récupéré sur MicroStrategy.
-    Si vous voulez me remercier pour la création de ce merveilleux outil, voici mon RIB :
+
+    Si vous voulez me remercier pour la création de ce merveilleux outil, voici mon RIB : FR76 1080 7004 6942 4196 7298 767
+
+
+    Benoît GUENIN, étudiant en deuxième année à l'Icam Toulouse
 
     """)
 
