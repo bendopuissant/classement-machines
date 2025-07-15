@@ -10,7 +10,8 @@ Original file is located at
 import streamlit as st
 import pandas as pd
 from io import BytesIO
-from traitement import traiter_fichier_excel  # Ton code existant ici
+from traitement_F13 import code_traitement_F13
+from traitement_machines import code_traitement_machines
 
 st.set_page_config(page_title="Classement Machines", layout="centered")
 
@@ -23,33 +24,43 @@ st.sidebar.markdown("""
 
 ⚠️ Il faut que le fichier s'appelle "Business Unit Groupe 2.xlsx"
 
-2. Cliquer sur "🧪 Lancer le traitement" pour traiter le fichier
+2. Cliquer sur "🧪 Lancer le traitement F13" ou "🧪 Lancer le traitement machines" pour traiter en fonction du F13 seulement ou de tous les types d'arrêts
 
-3. Cliquez sur "📥 Télécharger le fichier classé" pour l'enregistrer sur votre appareil.
+3. Cliquer sur "📥 Télécharger le fichier classé" pour l'enregistrer sur votre appareil.
 
 ⚠️ Cet outil n'enregistre pas les fichiers (il faut bien importer à chaque fois)
 
 """)
 
-col1, col2 = st.columns([4, 1])
-with col2:
-    st.image("logo.png", width=80)
+st.image("logo.png", width=100)
 
 # Téléversement du fichier principal
 uploaded_file = st.file_uploader("📁 Fichier 'Business Unit Groupe 2.xlsx'", type=["xlsx"])
 
 
 if uploaded_file:
-    if st.button("🧪 Lancer le traitement"):
+    if st.button("🧪 Lancer le traitement F13"):
         with st.spinner("Traitement en cours..."):
 
-            fichier_sortie = traiter_fichier_excel(uploaded_file)
+            fichier_F13 = code_traitement_F13(uploaded_file)
 
             st.success("✅ Traitement terminé !")
             st.download_button(
                 label="📥 Télécharger le fichier classé",
                 data=fichier_sortie.getvalue(),
                 file_name="Impact_F13.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+    if st.button("🧪 Lancer le traitement machines"):
+        with st.spinner("Traitement en cours..."):
+
+            fichier_machines = code_traitement_machines(uploaded_file)
+
+            st.success("✅ Traitement terminé !")
+            st.download_button(
+                label="📥 Télécharger le fichier classé",
+                data=fichier_sortie.getvalue(),
+                file_name="Impact_machines.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 else:
