@@ -15,6 +15,12 @@ from traitement_machines import code_traitement_machines
 
 st.set_page_config(page_title="Classement Machines", layout="centered")
 
+col1, col2 = st.columns([3, 1])
+
+with col2:
+    st.image("logo.png", width=500)
+
+with col1:
 st.title("📊 Classement des données machines")
 st.write("Uploadez les fichiers ci-dessous pour générer le rapport.")
 
