@@ -21,8 +21,8 @@ with col2:
     st.image("logo.png", width=500)
 
 with col1:
-st.title("📊 Classement des données machines")
-st.write("Uploadez les fichiers ci-dessous pour générer le rapport.")
+  st.title("📊 Classement des données machines")
+  st.write("Uploadez les fichiers ci-dessous pour générer le rapport.")
 
 st.sidebar.title("📘 Mode d'emploi")
 st.sidebar.markdown("""
