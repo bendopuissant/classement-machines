@@ -10,7 +10,7 @@ Original file is located at
 import streamlit as st
 import pandas as pd
 from io import BytesIO
-from traitement_F13 import code_traitement_F13
+from traitement_f13 import code_traitement_F13
 from traitement_machines import code_traitement_machines
 
 st.set_page_config(page_title="Classement Machines", layout="centered")
