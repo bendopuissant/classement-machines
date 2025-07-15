@@ -86,8 +86,9 @@ def code_traitement_F13(file_data):
             résumé.to_excel(writer, sheet_name=clé_machine, index=False)
 
         # Création de la feuille avec classement des sous-codes
+        données['Machine.Sous-code'] = données['Machine'] + '.' + données['Sous-code']
         classement_sous_codes = (
-            données.groupby(['Sous-code', 'Description'])['Durée (mn)']
+            données.groupby(['Machine.Sous-code', 'Description'])['Durée (mn)']
             .sum()
             .reset_index()
             .rename(columns={'Durée (mn)': 'Durée totale (mn)'})
