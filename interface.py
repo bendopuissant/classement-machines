@@ -39,8 +39,11 @@ with st.sidebar :
   Le fichier contiendra :
 
   -Une feuille des données complètes;
+
   -Un classement des machines par temps d'arrêt;
+
   -Une feuille par machine;
+
   -Un résumé des causes.
 
   ⚠️ Cet outil n'enregistre pas les fichiers (il faut bien importer à chaque fois)
