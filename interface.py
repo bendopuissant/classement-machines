@@ -32,7 +32,7 @@ st.sidebar.markdown("""
 
 """)
 
-st.image("logo.png", width=100)
+st.sidebar.image("logo.png", width=500)
 
 # Téléversement du fichier principal
 uploaded_file = st.file_uploader("📁 Fichier 'Business Unit Groupe 2.xlsx'", type=["xlsx"])
