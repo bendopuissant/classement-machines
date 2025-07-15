@@ -24,6 +24,15 @@ with col1:
   st.title("📊 Classement des données machines")
   st.write("Uploadez les fichiers ci-dessous pour générer le rapport.")
 
+with st.expander("A propos") :
+  st.markdown("""
+  J'ai mis au point cet outil dans le cadre d'un stage technicien à Michelin Blanzy du 10/06/2025 au 18/07/2025.
+  Il a pour but de faciliter le traitement de données en permettant de créer un fichier complet classant les données à partir d'un fichier excel récupéré sur MicroStrategy.
+  Si vous voulez me remercier pour la création de ce merveilleux outil, voici mon RIB :
+
+  """)
+
+
 st.sidebar.title("📘 Mode d'emploi")
 st.sidebar.markdown("""
 1. Cliquer sur "Browse files" pour télécharger le fichier à traiter
@@ -33,6 +42,13 @@ st.sidebar.markdown("""
 2. Cliquer sur "🧪 Lancer le traitement F13" ou "🧪 Lancer le traitement machines" pour traiter en fonction du F13 seulement ou de tous les types d'arrêts
 
 3. Cliquer sur "📥 Télécharger le fichier classé" pour l'enregistrer sur votre appareil.
+
+Le fichier contiendra :
+
+-Une feuille des données complètes;
+-Un classement des machines par temps d'arrêt;
+-Une feuille par machine;
+-Un résumé des causes.
 
 ⚠️ Cet outil n'enregistre pas les fichiers (il faut bien importer à chaque fois)
 
