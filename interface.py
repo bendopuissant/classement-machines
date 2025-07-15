@@ -47,7 +47,7 @@ if uploaded_file:
             st.success("✅ Traitement terminé !")
             st.download_button(
                 label="📥 Télécharger le fichier classé",
-                data=fichier_sortie.getvalue(),
+                data=fichier_F13.getvalue(),
                 file_name="Impact_F13.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
@@ -59,7 +59,7 @@ if uploaded_file:
             st.success("✅ Traitement terminé !")
             st.download_button(
                 label="📥 Télécharger le fichier classé",
-                data=fichier_sortie.getvalue(),
+                data=fichier_machines.getvalue(),
                 file_name="Impact_machines.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
