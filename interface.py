@@ -18,7 +18,7 @@ st.set_page_config(page_title="Classement Machines", layout="centered")
 col1, col2 = st.columns([3, 1])
 
 with col2:
-    st.image("logo.png", width=700)
+    st.image("logo.png", width=1000)
 
 with col1:
   st.title("📊 Classement des données machines")
