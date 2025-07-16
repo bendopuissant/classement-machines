@@ -30,8 +30,6 @@ with st.sidebar :
   st.sidebar.markdown("""
   1. Cliquer sur "Browse files" pour télécharger le fichier à traiter
 
-  ⚠️ Il faut que le fichier s'appelle "Business Unit Groupe 2.xlsx"
-
   2. Cliquer sur "🧪 Lancer le traitement F13" ou "🧪 Lancer le traitement machines" pour traiter en fonction du F13 seulement ou de tous les types d'arrêts
 
   3. Cliquer sur "📥 Télécharger le fichier classé" pour l'enregistrer sur votre appareil.
@@ -65,7 +63,7 @@ with st.sidebar :
     """)
 
 # Téléversement du fichier principal
-uploaded_file = st.file_uploader("📁 Fichier 'Business Unit Groupe 2.xlsx'", type=["xlsx"])
+uploaded_file = st.file_uploader("📁 Fichier", type=["xlsx"])
 
 
 if uploaded_file:
