@@ -14,8 +14,11 @@ def code_traitement_machines(file_data):
     from io import BytesIO
 
     # 1. Chargement des données
-    données = pd.read_excel(file_data, sheet_name="COMMENTAIRES", skiprows=2)
+    données = pd.read_excel(file_data, sheet_name="COMMENTAIRES")
     causes = pd.read_excel("GR2.xlsx", sheet_name="Sheet1")
+
+    if données.columns[0] == "COMMENTAIRES" :
+        données = pd.read_excel(file_data, sheet_name="COMMENTAIRES", skiprows=2)
 
     données = données.rename(columns={
         "05_Date Heure Début": "Date Heure Début",
