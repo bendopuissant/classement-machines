@@ -140,7 +140,7 @@ def code_traitement_F13(fichier_données):
 
     # --- Graphique 2 : Classement des causes ---
     fig2 = plt.figure(figsize=(30, 6))
-    plt.bar(top_20["Machine.Sous-code"],top_20["Durée totale (mn)"], color='skyblue')
+    plt.bar(top_20["Machine.Sous-code"], top_20["Durée totale (mn)"], color='skyblue')
     plt.title("Classement général des causes")
     plt.xlabel("Cause")
     plt.ylabel("Durée d'arrêt (min)")
@@ -150,7 +150,7 @@ def code_traitement_F13(fichier_données):
     img_buffer2 = BytesIO()
     fig2.savefig(img_buffer2, format='png')
     plt.close(fig2)
-    img_buffer2.seek(0)
+
 
     # --- Ajout dans le fichier Excel ---
     img1 = ExcelImage(img_buffer1)
