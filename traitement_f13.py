@@ -122,6 +122,8 @@ def code_traitement_F13(fichier_données):
     ws1 = wb["Machines"]
     ws2 = wb["Classement Sous-codes"]
 
+    top_20 = classement_sous_codes.head(20)
+
     # --- Graphique 1 : Durée par machine ---
     fig1 = plt.figure(figsize=(10, 6))
     plt.bar(durée_tot["Machine"], durée_tot["Durée (mn)"], color='skyblue')
@@ -138,7 +140,7 @@ def code_traitement_F13(fichier_données):
 
     # --- Graphique 2 : Classement des causes ---
     fig2 = plt.figure(figsize=(30, 6))
-    plt.bar(classement_sous_codes["Machine.Sous-code"], classement_sous_codes["Durée totale (mn)"], color='skyblue')
+    plt.bar(top_20["Machine.Sous-code"],top_20["Durée totale (mn)"], color='skyblue')
     plt.title("Classement général des causes")
     plt.xlabel("Cause")
     plt.ylabel("Durée d'arrêt (min)")
