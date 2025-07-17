@@ -137,7 +137,7 @@ def code_traitement_F13(fichier_données):
     img_buffer1.seek(0)
 
     # --- Graphique 2 : Classement des causes ---
-    fig2 = plt.figure(figsize=(10, 6))
+    fig2 = plt.figure(figsize=(20, 6))
     plt.bar(classement_sous_codes["Machine.Sous-code"], classement_sous_codes["Durée totale (mn)"], color='skyblue')
     plt.title("Classement général des causes")
     plt.xlabel("Cause")
