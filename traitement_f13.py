@@ -13,6 +13,7 @@ def code_traitement_F13(fichier_données):
     from openpyxl import Workbook
     from openpyxl.utils import get_column_letter
     from openpyxl.drawing.image import Image as ExcelImage
+    from openpyxl import load_workbook
     from io import BytesIO
 
     # 1. Chargement des données
