@@ -117,33 +117,51 @@ def code_traitement_F13(fichier_données):
 
     output.seek(0)
 
-    # On charge le classeur pour ajouter le graphique dans la feuille "Machines"
-    wb = load_workbook(filename=output)
-    ws = wb["Machines"]
+# On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
+wb = load_workbook(filename=output)
+ws1 = wb["Machines"]
+ws2 = wb["Classement Sous-codes"]
 
-    # Création du graphique avec matplotlib
-    plt.figure(figsize=(10, 6))
-    plt.bar(durée_tot["Machine"], durée_tot["Durée (mn)"], color='skyblue')
-    plt.title("Temps d'arrêt total par machine")
-    plt.xlabel("Machine")
-    plt.ylabel("Durée d'arrêt (min)")
-    plt.xticks(rotation=45, ha='right')
-    plt.tight_layout()
+# --- Graphique 1 : Durée par machine ---
+fig1 = plt.figure(figsize=(10, 6))
+plt.bar(durée_tot["Machine"], durée_tot["Durée (mn)"], color='skyblue')
+plt.title("Temps d'arrêt total par machine")
+plt.xlabel("Machine")
+plt.ylabel("Durée d'arrêt (min)")
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
 
-    # Sauvegarde dans une image en mémoire (pas sur le disque)
-    img_buffer = BytesIO()
-    plt.savefig(img_buffer, format='png')
-    plt.close()
-    img_buffer.seek(0)
+img_buffer1 = BytesIO()
+fig1.savefig(img_buffer1, format='png')
+plt.close(fig1)
+img_buffer1.seek(0)
 
-    # Ajout du graphique dans la feuille Excel
-    img = ExcelImage(img_buffer)
-    img.anchor = 'H5'
-    ws.add_image(img)
+# --- Graphique 2 : Classement des causes ---
+fig2 = plt.figure(figsize=(10, 6))
+plt.bar(classement_sous_codes["Machine.Sous-code"], classement_sous_codes["Durée totale (mn)"], color='skyblue')
+plt.title("Classement général des causes")
+plt.xlabel("Cause")
+plt.ylabel("Durée d'arrêt (min)")
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
 
-    # Réenregistrement final dans le buffer
-    final_output = BytesIO()
-    wb.save(final_output)
-    final_output.seek(0)
+img_buffer2 = BytesIO()
+fig2.savefig(img_buffer2, format='png')
+plt.close(fig2)
+img_buffer2.seek(0)
 
-    return final_output
+# --- Ajout dans le fichier Excel ---
+img1 = ExcelImage(img_buffer1)
+img1.anchor = 'H5'
+ws1.add_image(img1)
+
+img2 = ExcelImage(img_buffer2)
+img2.anchor = 'H5'
+ws2.add_image(img2)
+
+# --- Réenregistrement du fichier Excel en mémoire ---
+final_output = BytesIO()
+wb.save(final_output)
+final_output.seek(0)
+
+return final_output
