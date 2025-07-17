@@ -145,4 +145,4 @@ def code_traitement_F13(fichier_données):
     wb.save(final_output)
     final_output.seek(0)
 
-return final_output
+    return final_output
