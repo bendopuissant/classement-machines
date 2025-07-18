@@ -91,6 +91,35 @@ def code_traitement_F13(fichier_données):
             résumé['Durée totale (mn)'] = résumé['Durée totale (mn)'].round(0).astype(int)
             résumé.to_excel(writer, sheet_name=clé_machine, index=False)
 
+            # On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
+            wb = load_workbook(filename=output)
+            ws = wb["clé_machine"]
+
+            # --- Graphique : Résumé sous-codes machine ---
+            fig = plt.figure(figsize=(10, 6))
+            plt.bar(résumé["Sous-code"], résumé["Durée totale (mn)"], color='skyblue')
+            plt.title("Temps d'arrêt total par cause")
+            plt.xlabel("Machine")
+            plt.ylabel("Durée d'arrêt (min)")
+            plt.xticks(rotation=45, ha='right')
+            plt.tight_layout()
+
+            img_buffer = BytesIO()
+            fig.savefig(img_buffer, format='png')
+            plt.close(fig)
+            img_buffer.seek(0)
+
+            # --- Ajout dans le fichier Excel ---
+            img = ExcelImage(img_buffer)
+            img.anchor = 'H5'
+            ws.add_image(img)
+
+            # --- Réenregistrement du fichier Excel en mémoire ---
+            output = BytesIO()
+            wb.save(output)
+            output.seek(0)
+
+
         # Création de la feuille avec classement des sous-codes
         données['Machine.Sous-code'] = données['Machine'] + '.' + données['Sous-code']
         classement_sous_codes = (
@@ -122,7 +151,7 @@ def code_traitement_F13(fichier_données):
     ws1 = wb["Machines"]
     ws2 = wb["Classement Sous-codes"]
 
-    top_20 = classement_sous_codes.head(20)
+    top_30 = classement_sous_codes.head(30)
 
     # --- Graphique 1 : Durée par machine ---
     fig1 = plt.figure(figsize=(10, 6))
@@ -140,7 +169,7 @@ def code_traitement_F13(fichier_données):
 
     # --- Graphique 2 : Classement des causes ---
     fig2 = plt.figure(figsize=(10, 6))
-    plt.bar(top_20["Machine.Sous-code"], top_20["Durée totale (mn)"], color='skyblue')
+    plt.bar(top_30["Machine.Sous-code"], top_30["Durée totale (mn)"], color='skyblue')
     plt.title("Classement général des causes")
     plt.xlabel("Cause")
     plt.ylabel("Durée d'arrêt (min)")
