@@ -91,7 +91,7 @@ def code_traitement_F13(fichier_données):
             résumé['Durée totale (mn)'] = résumé['Durée totale (mn)'].round(0).astype(int)
             résumé.to_excel(writer, sheet_name=clé_machine, index=False)
 
-            output = seek(0)
+            output.seek(0)
 
             # On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
             wb = load_workbook(filename=output)
