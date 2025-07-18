@@ -91,6 +91,8 @@ def code_traitement_F13(fichier_données):
             résumé['Durée totale (mn)'] = résumé['Durée totale (mn)'].round(0).astype(int)
             résumé.to_excel(writer, sheet_name=clé_machine, index=False)
 
+            output = seek(0)
+
             # On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
             wb = load_workbook(filename=output)
             ws = wb["clé_machine"]
@@ -115,10 +117,9 @@ def code_traitement_F13(fichier_données):
             ws.add_image(img)
 
             # --- Réenregistrement du fichier Excel en mémoire ---
-            output = BytesIO()
-            wb.save(output)
-            output.seek(0)
-
+            final_output0 = BytesIO()
+            wb.save(final_output0)
+            final_output0.seek(0)
 
         # Création de la feuille avec classement des sous-codes
         données['Machine.Sous-code'] = données['Machine'] + '.' + données['Sous-code']
