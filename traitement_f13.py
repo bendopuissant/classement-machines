@@ -77,6 +77,8 @@ def code_traitement_F13(fichier_données):
 
     # Création du fichier en mémoire
     output = BytesIO()
+
+    # --- 1ère étape : on génère toutes les feuilles de données ---
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         données.to_excel(writer, sheet_name="Données", index=False)
         durée_tot.to_excel(writer, sheet_name="Machines", index=False)
@@ -91,37 +93,7 @@ def code_traitement_F13(fichier_données):
             résumé['Durée totale (mn)'] = résumé['Durée totale (mn)'].round(0).astype(int)
             résumé.to_excel(writer, sheet_name=clé_machine, index=False)
 
-            output.seek(0)
-
-            # On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
-            wb = load_workbook(filename=output)
-            ws = wb["clé_machine"]
-
-            # --- Graphique : Résumé sous-codes machine ---
-            fig = plt.figure(figsize=(10, 6))
-            plt.bar(résumé["Sous-code"], résumé["Durée totale (mn)"], color='skyblue')
-            plt.title("Temps d'arrêt total par cause")
-            plt.xlabel("Machine")
-            plt.ylabel("Durée d'arrêt (min)")
-            plt.xticks(rotation=45, ha='right')
-            plt.tight_layout()
-
-            img_buffer = BytesIO()
-            fig.savefig(img_buffer, format='png')
-            plt.close(fig)
-            img_buffer.seek(0)
-
-            # --- Ajout dans le fichier Excel ---
-            img = ExcelImage(img_buffer)
-            img.anchor = 'H5'
-            ws.add_image(img)
-
-            # --- Réenregistrement du fichier Excel en mémoire ---
-            final_output0 = BytesIO()
-            wb.save(final_output0)
-            final_output0.seek(0)
-
-        # Création de la feuille avec classement des sous-codes
+        # feuille de classement global
         données['Machine.Sous-code'] = données['Machine'] + '.' + données['Sous-code']
         classement_sous_codes = (
             données.groupby(['Machine.Sous-code', 'Description'])['Durée (mn)']
@@ -131,30 +103,46 @@ def code_traitement_F13(fichier_données):
             .sort_values(by='Durée totale (mn)', ascending=False)
         )
         classement_sous_codes['Durée totale (mn)'] = classement_sous_codes['Durée totale (mn)'].round(0).astype(int)
-
         classement_sous_codes.to_excel(writer, sheet_name="Classement Sous-codes", index=False)
-
-        # Ajustement des colonnes
-        workbook = writer.book
-        for ws in workbook.worksheets:
-            for col in ws.columns:
-                max_length = 0
-                col_letter = get_column_letter(col[0].column)
-                for cell in col:
-                    if cell.value:
-                        max_length = max(max_length, len(str(cell.value)))
-                ws.column_dimensions[col_letter].width = max_length + 2
 
     output.seek(0)
 
-    # On charge le classeur pour ajouter les graphiques dans les bonnes feuilles
+    # --- 2e étape : on ajoute tous les graphiques ---
     wb = load_workbook(filename=output)
+
+    # Graphiques individuels pour chaque machine
+    for clé_machine in machines_triées:
+        if clé_machine == "00":
+            continue
+        val_machine = dico_machines.get(clé_machine)
+        résumé = val_machine.groupby(['Sous-code', 'Description'])['Durée (mn)'].sum().reset_index()
+        résumé = résumé.rename(columns={'Durée (mn)': 'Durée totale (mn)'})
+        résumé = résumé.sort_values(by='Durée totale (mn)', ascending=False)
+        résumé['Durée totale (mn)'] = résumé['Durée totale (mn)'].round(0).astype(int)
+
+        fig = plt.figure(figsize=(10, 6))
+        plt.bar(résumé["Sous-code"].head(20), résumé["Durée totale (mn)"].head(20), color='skyblue')
+        plt.title(f"Top causes pour {clé_machine}")
+        plt.xlabel("Sous-code")
+        plt.ylabel("Durée d'arrêt (min)")
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+
+        img_buffer = BytesIO()
+        fig.savefig(img_buffer, format='png')
+        plt.close(fig)
+        img_buffer.seek(0)
+
+        img = ExcelImage(img_buffer)
+        img.anchor = 'H5'
+        ws = wb[clé_machine]  # ✅ ici c'est la variable, pas "clé_machine"
+        ws.add_image(img)
+
+    # Graphiques globaux
     ws1 = wb["Machines"]
     ws2 = wb["Classement Sous-codes"]
 
-    top_30 = classement_sous_codes.head(30)
-
-    # --- Graphique 1 : Durée par machine ---
+    # Graphique 1
     fig1 = plt.figure(figsize=(10, 6))
     plt.bar(durée_tot["Machine"], durée_tot["Durée (mn)"], color='skyblue')
     plt.title("Temps d'arrêt total par machine")
@@ -162,13 +150,16 @@ def code_traitement_F13(fichier_données):
     plt.ylabel("Durée d'arrêt (min)")
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
-
     img_buffer1 = BytesIO()
     fig1.savefig(img_buffer1, format='png')
     plt.close(fig1)
     img_buffer1.seek(0)
+    img1 = ExcelImage(img_buffer1)
+    img1.anchor = 'H5'
+    ws1.add_image(img1)
 
-    # --- Graphique 2 : Classement des causes ---
+    # Graphique 2
+    top_30 = classement_sous_codes.head(30)
     fig2 = plt.figure(figsize=(10, 6))
     plt.bar(top_30["Machine.Sous-code"], top_30["Durée totale (mn)"], color='skyblue')
     plt.title("Classement général des causes")
@@ -176,22 +167,15 @@ def code_traitement_F13(fichier_données):
     plt.ylabel("Durée d'arrêt (min)")
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
-
     img_buffer2 = BytesIO()
     fig2.savefig(img_buffer2, format='png')
     plt.close(fig2)
-
-
-    # --- Ajout dans le fichier Excel ---
-    img1 = ExcelImage(img_buffer1)
-    img1.anchor = 'H5'
-    ws1.add_image(img1)
-
+    img_buffer2.seek(0)
     img2 = ExcelImage(img_buffer2)
     img2.anchor = 'H5'
     ws2.add_image(img2)
 
-    # --- Réenregistrement du fichier Excel en mémoire ---
+    # Sauvegarde finale
     final_output = BytesIO()
     wb.save(final_output)
     final_output.seek(0)
