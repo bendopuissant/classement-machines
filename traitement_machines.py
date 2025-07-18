@@ -191,5 +191,3 @@ def code_traitement_machines(fichier_données):
     final_output.seek(0)
 
     return final_output
-
-pip install matplotlib
