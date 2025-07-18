@@ -105,6 +105,17 @@ def code_traitement_F13(fichier_données):
         classement_sous_codes['Durée totale (mn)'] = classement_sous_codes['Durée totale (mn)'].round(0).astype(int)
         classement_sous_codes.to_excel(writer, sheet_name="Classement Sous-codes", index=False)
 
+     # Ajustement des colonnes
+        workbook = writer.book
+        for ws in workbook.worksheets:
+            for col in ws.columns:
+                max_length = 0
+                col_letter = get_column_letter(col[0].column)
+                for cell in col:
+                    if cell.value:
+                        max_length = max(max_length, len(str(cell.value)))
+                ws.column_dimensions[col_letter].width = max_length + 2
+
     output.seek(0)
 
     # --- 2e étape : on ajoute tous les graphiques ---
