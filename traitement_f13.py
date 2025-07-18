@@ -146,7 +146,7 @@ def code_traitement_F13(fichier_données):
 
         img = ExcelImage(img_buffer)
         img.anchor = 'H5'
-        ws = wb[clé_machine]  # ✅ ici c'est la variable, pas "clé_machine"
+        ws = wb[clé_machine]
         ws.add_image(img)
 
     # Graphiques globaux
